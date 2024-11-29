@@ -1,7 +1,7 @@
 const express = require('express');
 const { createPost } = require('../controllers/postController');
 const authMiddleware = require('../middleware/authMiddleware');
-
+const postController = require('../controllers/postController');
 const router = express.Router();
 
 /**
@@ -39,5 +39,9 @@ const router = express.Router();
 router.post('/', authMiddleware, createPost);
 
 // Outras rotas para posts (get, update, delete) seriam adicionadas aqui
-
+router.post('/', postController.createPost);
+router.get('/', postController.getPosts);
+router.get('/:id', postController.getPostById);
+router.put('/:id', postController.updatePost);
+router.delete('/:id', postController.deletePost);
 module.exports = router;

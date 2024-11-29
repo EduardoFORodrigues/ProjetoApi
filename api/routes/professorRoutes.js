@@ -1,6 +1,7 @@
 const express = require('express');
 const { createProfessor } = require('../controllers/professorController');
 const authMiddleware = require('../middleware/authMiddleware');
+const professorController = require('../controllers/professorController');
 
 const router = express.Router();
 
@@ -35,5 +36,10 @@ const router = express.Router();
 router.post('/', authMiddleware, createProfessor);
 
 // Outras rotas para professores (get, update, delete) seriam adicionadas aqui
+router.post('/', professorController.createProfessor);
+router.get('/', professorController.getProfessores);
+router.get('/:id', professorController.getProfessorById);
+router.put('/:id', professorController.updateProfessor);
+router.delete('/:id', professorController.deleteProfessor);
 
 module.exports = router;
