@@ -1,25 +1,45 @@
-//Adiconar  conteudo do usercontrole
+const User = require("../models/user");
 
-const User = require("../models/professor");
-
+// Função para criar um novo usuário
 exports.createUser = async (req, res) => {
-  const { nome, especialidade } = req.body;
-
+  const { nome, email, senha, type } = req.body;
   try {
-    const user = new User({ nome, especialidade });
+    // Validação para aceitar apenas aluno ou professor como tipo
+    if (!["aluno", "professor"].includes(type)) {
+      return res
+        .status(400)
+        .json({ msg: "O tipo deve ser 'aluno' ou 'professor'" });
+    }
+
+    const user = new User({ nome, email, senha, type });
+    console.log(user);
     await user.save();
-    res.status(201).json(user);
+    res.status(201).json({ msg: "Usuário criado com sucesso", user });
   } catch (err) {
-    res.status(500).json({ msg: "Erro ao criar o Usuáio" });
+    res
+      .status(500)
+      .json({ msg: "Erro ao criar o usuário", error: err.message });
   }
 };
-// Buscar todos os usuários
-exports.getUsers = async (req, res) => {
+
+// Buscar todos os usuários por tipo
+exports.getUsersByType = async (req, res) => {
+  const { type } = req.params;
+
   try {
-    const users = await User.find();
+    // Verifica se o tipo é válido
+    if (!["aluno", "professor"].includes(type)) {
+      return res
+        .status(400)
+        .json({ msg: "Tipo inválido, use 'aluno' ou 'professor'" });
+    }
+
+    const users = await User.find({ type });
     res.status(200).json(users);
   } catch (err) {
-    res.status(500).json({ msg: 'Erro ao buscar os usuários', error: err.message });
+    res
+      .status(500)
+      .json({ msg: "Erro ao buscar usuários", error: err.message });
   }
 };
 
@@ -27,27 +47,32 @@ exports.getUsers = async (req, res) => {
 exports.getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ msg: 'Usuário não encontrado' });
+    if (!user) return res.status(404).json({ msg: "Usuário não encontrado" });
     res.status(200).json(user);
   } catch (err) {
-    res.status(500).json({ msg: 'Erro ao buscar o usuário', error: err.message });
+    res
+      .status(500)
+      .json({ msg: "Erro ao buscar o usuário", error: err.message });
   }
 };
 
 // Atualizar um usuário
 exports.updateUser = async (req, res) => {
-  const { titulo, autor, descricao } = req.body;
+  const { nome, email } = req.body;
 
   try {
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { titulo, autor, descricao },
-      { new: true, runValidators: true }
-    );
-    if (!user) return res.status(404).json({ msg: 'Usuário não encontrado' });
-    res.status(200).json(user);
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ msg: "Usuário não encontrado" });
+
+    if (nome) user.nome = nome;
+    if (email) user.email = email;
+
+    await user.save();
+    res.status(200).json({ msg: "Usuário atualizado com sucesso", user });
   } catch (err) {
-    res.status(500).json({ msg: 'Erro ao atualizar o usuário', error: err.message });
+    res
+      .status(500)
+      .json({ msg: "Erro ao atualizar o usuário", error: err.message });
   }
 };
 
@@ -55,9 +80,11 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return res.status(404).json({ msg: 'Usuário não encontrado' });
-    res.status(200).json({ msg: 'Usuário deletado com sucesso' });
+    if (!user) return res.status(404).json({ msg: "Usuário não encontrado" });
+    res.status(200).json({ msg: "Usuário deletado com sucesso" });
   } catch (err) {
-    res.status(500).json({ msg: 'Erro ao deletar o usuário', error: err.message });
+    res
+      .status(500)
+      .json({ msg: "Erro ao deletar o usuário", error: err.message });
   }
 };
