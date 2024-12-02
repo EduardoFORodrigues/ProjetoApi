@@ -12,14 +12,16 @@ import Toast from "react-native-toast-message"; // Importe o Toast aqui
 import { useAuth } from "@/context/AuthContext";
 import { router } from "expo-router";
 
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 const validateEmail = (email: string) => {
   return email.includes("@") && email.includes(".");
 };
 
 const loginApi = async (credentials: { email: string; password: string }) => {
-  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-  const apiRoute = apiUrl + "api/auth/login";
+  console.log(apiUrl);
 
+  const apiRoute = apiUrl + "/api/auth/login";
+  console.log(apiRoute);
   const response = await axios.post(apiRoute, credentials);
   console.log("response");
   return response.data;

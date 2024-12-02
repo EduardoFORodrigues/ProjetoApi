@@ -31,7 +31,7 @@ const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 // Function to fetch students (simulating an API)
 const fetchStudents = async (token: string): Promise<Student[]> => {
-  const apiRoute = apiUrl + "api/users/aluno";
+  const apiRoute = apiUrl + "/api/users/aluno";
 
   const response = await axios.get(apiRoute, {
     headers: {
@@ -43,7 +43,7 @@ const fetchStudents = async (token: string): Promise<Student[]> => {
 
 // Function to delete a student
 const deleteStudent = async (id: string, token: string): Promise<void> => {
-  const apiRoute = apiUrl + "api/users";
+  const apiRoute = apiUrl + "/api/users";
 
   await axios.delete(`${apiRoute}/${id}`, {
     headers: {
@@ -57,7 +57,7 @@ const createStudent = async (
   newStudent: Omit<Student, "_id">,
   token: string
 ): Promise<Student> => {
-  const apiRoute = apiUrl + "api/users";
+  const apiRoute = apiUrl + "/api/users";
 
   const response = await axios.post(
     apiRoute,
@@ -78,7 +78,7 @@ const editStudent = async (
   updatedStudent: Omit<Student, "_id">,
   token: string
 ): Promise<Student> => {
-  const apiRoute = apiUrl + "api/users";
+  const apiRoute = apiUrl + "/api/users";
 
   const response = await axios.put(
     `${apiRoute}/${id}`,

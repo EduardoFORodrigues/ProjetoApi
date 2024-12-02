@@ -28,10 +28,10 @@ interface Post {
   descricao: string;
 }
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-
+console.log(apiUrl);
 // Function to fetch posts (simulating an API)
 const fetchPosts = async (token: string): Promise<Post[]> => {
-  const apiRoute = apiUrl + "api/posts";
+  const apiRoute = apiUrl + "/api/posts";
   const response = await axios.get(apiRoute, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -42,12 +42,15 @@ const fetchPosts = async (token: string): Promise<Post[]> => {
 
 // Function to delete a post
 const deletePost = async (id: string, token: string): Promise<void> => {
-  const apiRoute = apiUrl + "api/posts";
-  await axios.delete(`${apiRoute}/${id}`, {
+  console.log(id);
+  const apiRoute = apiUrl + "/api/posts";
+  console.log(apiRoute);
+  const response = await axios.delete(`${apiRoute}/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log(response);
 };
 
 // Function to create a new post
@@ -55,7 +58,7 @@ const createPost = async (
   newPost: Omit<Post, "_id">,
   token: string
 ): Promise<Post> => {
-  const apiRoute = apiUrl + "api/posts";
+  const apiRoute = apiUrl + "/api/posts";
 
   const response = await axios.post(apiRoute, newPost, {
     headers: {
@@ -75,7 +78,7 @@ const editPost = async ({
   updatedPost: Omit<Post, "_id">;
   token: string;
 }): Promise<Post> => {
-  const apiRoute = apiUrl + "api/posts";
+  const apiRoute = apiUrl + "/api/posts";
   const response = await axios.put(`${apiRoute}/${id}`, updatedPost, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -226,7 +229,7 @@ const PostsManagement = () => {
         <Card.Actions>
           <TouchableOpacity
             style={styles.deleteButton}
-            onPress={() => removePost(selectedPostId)}
+            onPress={() => removePost(post._id)}
           >
             <Text style={styles.deleteButtonText}>Excluir</Text>
           </TouchableOpacity>

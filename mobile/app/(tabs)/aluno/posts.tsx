@@ -24,7 +24,7 @@ const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 // Função para buscar os posts (simulando uma API)
 const fetchPosts = async (): Promise<Post[]> => {
-  const apiRoute = apiUrl + "api/posts";
+  const apiRoute = apiUrl + "/api/posts";
   const response = await axios.get(apiRoute);
   return response.data;
 };

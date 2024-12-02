@@ -30,7 +30,7 @@ interface Teacher {
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 // Function to fetch teachers (simulating an API)
 const fetchTeachers = async (token: string): Promise<Teacher[]> => {
-  const apiRoute = apiUrl + "api/users/professor";
+  const apiRoute = apiUrl + "/api/users/professor";
 
   const response = await axios.get(apiRoute, {
     headers: {
@@ -42,7 +42,7 @@ const fetchTeachers = async (token: string): Promise<Teacher[]> => {
 
 // Function to delete a teacher
 const deleteTeacher = async (id: string, token: string): Promise<void> => {
-  const apiRoute = apiUrl + "api/users";
+  const apiRoute = apiUrl + "/api/users";
 
   await axios.delete(`${apiRoute}/${id}`, {
     headers: {
@@ -56,7 +56,7 @@ const createTeacher = async (
   newTeacher: Omit<Teacher, "_id">,
   token: string
 ): Promise<Teacher> => {
-  const apiRoute = apiUrl + "api/users";
+  const apiRoute = apiUrl + "/api/users";
 
   const response = await axios.post(
     apiRoute,
@@ -77,7 +77,7 @@ const editTeacher = async (
   updatedTeacher: Omit<Teacher, "_id">,
   token: string
 ): Promise<Teacher> => {
-  const apiRoute = apiUrl + "api/users";
+  const apiRoute = apiUrl + "/api/users";
 
   const response = await axios.put(
     `${apiRoute}/${id}`,
