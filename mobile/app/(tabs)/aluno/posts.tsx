@@ -20,10 +20,12 @@ interface Post {
   autor: string;
   descricao: string;
 }
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 // Função para buscar os posts (simulando uma API)
 const fetchPosts = async (): Promise<Post[]> => {
-  const response = await axios.get("http://172.16.5.204:5000/api/posts");
+  const apiRoute = apiUrl + "api/posts";
+  const response = await axios.get(apiRoute);
   return response.data;
 };
 

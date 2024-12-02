@@ -27,10 +27,12 @@ interface Post {
   autor: string;
   descricao: string;
 }
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 // Function to fetch posts (simulating an API)
 const fetchPosts = async (token: string): Promise<Post[]> => {
-  const response = await axios.get("http://172.16.5.204:5000/api/posts", {
+  const apiRoute = apiUrl + "api/posts";
+  const response = await axios.get(apiRoute, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -40,7 +42,8 @@ const fetchPosts = async (token: string): Promise<Post[]> => {
 
 // Function to delete a post
 const deletePost = async (id: string, token: string): Promise<void> => {
-  await axios.delete(`http://172.16.5.204:5000/api/posts/${id}`, {
+  const apiRoute = apiUrl + "api/posts";
+  await axios.delete(`${apiRoute}/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -52,15 +55,13 @@ const createPost = async (
   newPost: Omit<Post, "_id">,
   token: string
 ): Promise<Post> => {
-  const response = await axios.post(
-    "http://172.16.5.204:5000/api/posts",
-    newPost,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const apiRoute = apiUrl + "api/posts";
+
+  const response = await axios.post(apiRoute, newPost, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
@@ -74,15 +75,12 @@ const editPost = async ({
   updatedPost: Omit<Post, "_id">;
   token: string;
 }): Promise<Post> => {
-  const response = await axios.put(
-    `http://172.16.5.204:5000/api/posts/${id}`,
-    updatedPost,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const apiRoute = apiUrl + "api/posts";
+  const response = await axios.put(`${apiRoute}/${id}`, updatedPost, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 

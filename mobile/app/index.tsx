@@ -17,10 +17,11 @@ const validateEmail = (email: string) => {
 };
 
 const loginApi = async (credentials: { email: string; password: string }) => {
-  const response = await axios.post(
-    "http://172.16.5.204:5000/api/auth/login",
-    credentials
-  );
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+  const apiRoute = apiUrl + "api/auth/login";
+
+  const response = await axios.post(apiRoute, credentials);
+  console.log("response");
   return response.data;
 };
 
@@ -38,7 +39,8 @@ const LoginScreen = () => {
       });
       login(data.token);
     },
-    onError: () => {
+    onError: (error) => {
+      console.log("error", error);
       Toast.show({
         type: "error",
         position: "bottom",

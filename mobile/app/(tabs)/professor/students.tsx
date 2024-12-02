@@ -27,10 +27,13 @@ interface Student {
   email: string; // Add email field
   senha?: string; // Add optional senha field
 }
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 // Function to fetch students (simulating an API)
 const fetchStudents = async (token: string): Promise<Student[]> => {
-  const response = await axios.get("http://172.16.5.204:5000/api/users/aluno", {
+  const apiRoute = apiUrl + "api/users/aluno";
+
+  const response = await axios.get(apiRoute, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -40,7 +43,9 @@ const fetchStudents = async (token: string): Promise<Student[]> => {
 
 // Function to delete a student
 const deleteStudent = async (id: string, token: string): Promise<void> => {
-  await axios.delete(`http://172.16.5.204:5000/api/users/${id}`, {
+  const apiRoute = apiUrl + "api/users";
+
+  await axios.delete(`${apiRoute}/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -52,8 +57,10 @@ const createStudent = async (
   newStudent: Omit<Student, "_id">,
   token: string
 ): Promise<Student> => {
+  const apiRoute = apiUrl + "api/users";
+
   const response = await axios.post(
-    "http://172.16.5.204:5000/api/users",
+    apiRoute,
     {
       nome: newStudent.nome,
       type: "aluno",
@@ -71,8 +78,10 @@ const editStudent = async (
   updatedStudent: Omit<Student, "_id">,
   token: string
 ): Promise<Student> => {
+  const apiRoute = apiUrl + "api/users";
+
   const response = await axios.put(
-    `http://172.16.5.204:5000/api/users/${id}`,
+    `${apiRoute}/${id}`,
     { ...updatedStudent, type: "aluno" },
     {
       headers: {

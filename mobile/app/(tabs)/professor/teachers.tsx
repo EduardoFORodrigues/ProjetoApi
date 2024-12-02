@@ -27,23 +27,24 @@ interface Teacher {
   email: string; // Add email field
   senha?: string; // Add optional senha field
 }
-
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 // Function to fetch teachers (simulating an API)
 const fetchTeachers = async (token: string): Promise<Teacher[]> => {
-  const response = await axios.get(
-    "http://172.16.5.204:5000/api/users/professor",
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const apiRoute = apiUrl + "api/users/professor";
+
+  const response = await axios.get(apiRoute, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
 // Function to delete a teacher
 const deleteTeacher = async (id: string, token: string): Promise<void> => {
-  await axios.delete(`http://172.16.5.204:5000/api/users/${id}`, {
+  const apiRoute = apiUrl + "api/users";
+
+  await axios.delete(`${apiRoute}/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -55,8 +56,10 @@ const createTeacher = async (
   newTeacher: Omit<Teacher, "_id">,
   token: string
 ): Promise<Teacher> => {
+  const apiRoute = apiUrl + "api/users";
+
   const response = await axios.post(
-    "http://172.16.5.204:5000/api/users",
+    apiRoute,
     {
       nome: newTeacher.nome,
       type: "professor",
@@ -74,8 +77,10 @@ const editTeacher = async (
   updatedTeacher: Omit<Teacher, "_id">,
   token: string
 ): Promise<Teacher> => {
+  const apiRoute = apiUrl + "api/users";
+
   const response = await axios.put(
-    `http://172.16.5.204:5000/api/users/${id}`,
+    `${apiRoute}/${id}`,
     { ...updatedTeacher, type: "professor" },
     {
       headers: {
