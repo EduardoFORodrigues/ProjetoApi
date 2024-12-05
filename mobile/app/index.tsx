@@ -18,12 +18,9 @@ const validateEmail = (email: string) => {
 };
 
 const loginApi = async (credentials: { email: string; password: string }) => {
-  console.log(apiUrl);
 
   const apiRoute = apiUrl + "/api/auth/login";
-  console.log(apiRoute);
   const response = await axios.post(apiRoute, credentials);
-  console.log("response");
   return response.data;
 };
 
@@ -42,7 +39,6 @@ const LoginScreen = () => {
       login(data.token);
     },
     onError: (error) => {
-      console.log("error", error);
       Toast.show({
         type: "error",
         position: "bottom",
